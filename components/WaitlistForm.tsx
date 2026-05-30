@@ -63,12 +63,20 @@ export default function WaitlistForm() {
     setErrors({});
     setLoading(true);
 
-    // Simulate API call — replace with Supabase / Formspree / Resend / Google Sheets
-    // Example Supabase:
-    // const { error } = await supabase.from("waitlist").insert([form]);
-    await new Promise((r) => setTimeout(r, 1200));
+    const res = await fetch("/api/waitlist", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
 
+    const data = await res.json();
     setLoading(false);
+
+    if (!res.ok) {
+      setErrors({ email: data.error || "Error al enviar. Intentá de nuevo." });
+      return;
+    }
+
     setSubmitted(true);
   };
 
