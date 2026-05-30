@@ -61,10 +61,9 @@ export default function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="font-display text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-6"
+            className="font-display text-[2.6rem] md:text-5xl lg:text-[3.6rem] font-black leading-[1.08] tracking-tight mb-6"
           >
-            No sabés qué{" "}
-            <span className="text-gradient">hacer.</span>
+            No sabés qué <span className="text-gradient">hacer.</span>
             <br />
             Plancito te lo{" "}
             <span className="relative inline-block">
@@ -120,12 +119,12 @@ export default function HeroSection() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="flex flex-wrap gap-2"
+            className="flex flex-wrap gap-2 max-w-sm"
           >
             {chips.map((chip) => (
               <span
                 key={chip}
-                className="px-3 py-1 rounded-full text-xs font-medium bg-[#17120F] border border-[rgba(244,231,208,0.1)] text-[#F4E7D0]/50 hover:text-[#F0A84C] hover:border-[rgba(240,168,76,0.25)] transition-all duration-200 cursor-default"
+                className="whitespace-nowrap px-3 py-1 rounded-full text-xs font-medium bg-[#17120F] border border-[rgba(244,231,208,0.1)] text-[#F4E7D0]/50 hover:text-[#F0A84C] hover:border-[rgba(240,168,76,0.25)] transition-all duration-200 cursor-default"
               >
                 {chip}
               </span>
@@ -141,10 +140,11 @@ export default function HeroSection() {
           className="flex justify-center md:justify-end"
         >
           <div className="relative w-full max-w-sm">
-            {/* Glow behind card */}
-            <div className="absolute inset-0 bg-[#C76A2A]/15 blur-[60px] rounded-3xl" />
+            {/* Glow behind card — más pronunciado */}
+            <div className="absolute -inset-2 bg-[#C76A2A]/20 blur-[70px] rounded-3xl" />
+            <div className="absolute -inset-1 bg-[#F0A84C]/08 blur-[40px] rounded-3xl" />
 
-            <div className="relative bg-[#15110E] rounded-3xl border border-[rgba(244,231,208,0.1)] p-6 shadow-[0_8px_60px_rgba(0,0,0,0.6)]">
+            <div className="relative bg-[#15110E] rounded-3xl border border-[rgba(240,168,76,0.22)] p-6 shadow-[0_8px_60px_rgba(0,0,0,0.7),0_0_0_1px_rgba(240,168,76,0.06)]">
               {/* Header */}
               <div className="flex items-center gap-3 mb-5 pb-4 border-b border-[rgba(244,231,208,0.08)]">
                 <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#C76A2A] to-[#F0A84C] flex items-center justify-center">
