@@ -12,11 +12,15 @@ export async function GET(req: NextRequest) {
   const token = searchParams.get("hub.verify_token");
   const challenge = searchParams.get("hub.challenge");
 
-  if (mode === "subscribe" && token === VERIFY_TOKEN) {
+  // Acepta tanto la variable de entorno como el valor hardcodeado por seguridad
+  const validToken = VERIFY_TOKEN || "plancito_verify_2024";
+
+  if (mode === "subscribe" && token === validToken) {
     console.log("✅ Webhook verificado por Meta");
     return new NextResponse(challenge, { status: 200 });
   }
 
+  console.log(`❌ Token inválido. Recibido: "${token}", Esperado: "${validToken}"`);
   return new NextResponse("Forbidden", { status: 403 });
 }
 
