@@ -95,26 +95,28 @@ async function sendWhatsAppMessage(to: string, text: string) {
   return response.json();
 }
 
-// ─── Generar respuesta con IA (Claude) ──────────────────────────────────────
+// ─── Generar respuesta con IA (Groq) ────────────────────────────────────────
 async function generatePlancito(userMessage: string, userPhone: string): Promise<string> {
-  const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+  const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-  if (!ANTHROPIC_API_KEY) {
+  if (!GROQ_API_KEY) {
     return fallbackResponse(userMessage);
   }
 
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
+        "Authorization": `Bearer ${GROQ_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "claude-3-5-haiku-20241022",
+        model: "llama-3.1-8b-instant",
         max_tokens: 1024,
-        system: `Sos Plancito, un asistente de planes urbanos para Argentina. Tu personalidad es cercana, práctica, honesta y con onda. Hablás en argentino (vos, che, dale, etc.).
+        messages: [
+          {
+            role: "system",
+            content: `Sos Plancito, un asistente de planes urbanos para Argentina. Tu personalidad es cercana, práctica, honesta y con onda. Hablás en argentino (vos, che, dale, etc.).
 
 Tu objetivo: cuando alguien te dice dónde está, cuándo quiere salir y qué mood tiene, le recomendás 3-5 planes concretos y honestos.
 
@@ -129,7 +131,7 @@ Formato de respuesta (siempre):
 Si el mensaje no tiene suficiente info, preguntá solo lo esencial: zona, horario y presupuesto.
 
 Ejemplos de planes que podés recomendar: cafés tranquilos, parques, eventos culturales, ferias, bares, actividades gratuitas, paseos, restaurantes baratos, cines, museos, etc.`,
-        messages: [
+          },
           {
             role: "user",
             content: userMessage,
@@ -139,14 +141,14 @@ Ejemplos de planes que podés recomendar: cafés tranquilos, parques, eventos cu
     });
 
     if (!response.ok) {
-      console.error("Claude API error:", await response.text());
+      console.error("Groq API error:", await response.text());
       return fallbackResponse(userMessage);
     }
 
     const data = await response.json();
-    return data.content[0].text;
+    return data.choices[0].message.content;
   } catch (error) {
-    console.error("Claude error:", error);
+    console.error("Groq error:", error);
     return fallbackResponse(userMessage);
   }
 }
