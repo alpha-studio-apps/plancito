@@ -76,6 +76,10 @@ export async function POST(req: NextRequest) {
 async function sendWhatsAppMessage(to: string, text: string) {
   const url = `https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`;
 
+  // Asegurar formato correcto del número (sin + para Meta Cloud API)
+  const cleanTo = to.replace(/^\+/, "");
+  console.log(`📤 Enviando respuesta a: ${cleanTo}`);
+
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -84,7 +88,7 @@ async function sendWhatsAppMessage(to: string, text: string) {
     },
     body: JSON.stringify({
       messaging_product: "whatsapp",
-      to,
+      to: cleanTo,
       type: "text",
       text: { body: text },
     }),
