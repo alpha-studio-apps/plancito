@@ -76,8 +76,12 @@ export async function POST(req: NextRequest) {
 async function sendWhatsAppMessage(to: string, text: string) {
   const url = `https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`;
 
-  // Asegurar formato correcto del número (sin + para Meta Cloud API)
-  const cleanTo = to.replace(/^\+/, "");
+  // Normalizar número argentino: Meta sandbox quita el 9 de prefijo móvil
+  // Ej: 5492644113440 → 542644113440
+  let cleanTo = to.replace(/^\+/, "");
+  if (cleanTo.startsWith("549")) {
+    cleanTo = "54" + cleanTo.slice(3);
+  }
   console.log(`📤 Enviando respuesta a: ${cleanTo}`);
 
   const response = await fetch(url, {
